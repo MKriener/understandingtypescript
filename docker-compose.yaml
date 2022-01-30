@@ -1,0 +1,13 @@
+version: '3.6'
+
+services:
+
+  nodebox:
+    image: thecodingmachine/nodejs:16-apache
+    working_dir: /var/www/html/app
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    volumes:
+      - ./app:/var/www/html/app
+    command: bash -c "yarn install --pure-lockfile && yarn start"
