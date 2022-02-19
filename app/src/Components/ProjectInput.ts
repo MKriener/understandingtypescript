@@ -1,7 +1,7 @@
-import Autoload from "../Decorators/Autoload.js";
-import * as Validation from "../Validators/Validation.js";
-import {projectState} from "../State/ProjectState.js";
-import Component from "./Component.js";
+import Autoload from "../Decorators/Autoload";
+import * as Validation from "../Validators/Validation";
+import {projectState} from "../State/ProjectState";
+import Component from "./Component";
 
 export default class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     titleInputElement: HTMLInputElement;
