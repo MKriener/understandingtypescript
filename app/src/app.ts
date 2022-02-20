@@ -1,10 +1,7 @@
-import ProjectInput from "./Components/ProjectInput";
-import ProjectList from "./Components/ProjectList";
-import {ProjectStatus} from "./Models/Project";
+import _ from 'lodash';
 
-new ProjectInput();
+declare let GLOBAL: string;
 
-new ProjectList(ProjectStatus.Active);
-new ProjectList(ProjectStatus.Finished);
+console.log(_.shuffle([1,2,3]));
 
-
+console.log(GLOBAL);
