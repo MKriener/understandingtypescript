@@ -1,37 +1,39 @@
-import 'reflect-metadata';
-import { plainToInstance } from "class-transformer";
+import axios from 'axios';
 
-import _ from 'lodash';
-import { Product } from './product.model';
-import {validate} from "class-validator";
+const form = document.querySelector('form')!;
+const addressInput = document.querySelector('address') as HTMLInputElement;
+const API_KEY = 'SDSDDSDDDsdasdasdasdasdwewewewdSADasdwedaxcWewe';
 
-declare let GLOBAL: string;
+type GoogleGeoResponse = {
+    results: {  geometry: { location: { lat: number, lng: number } } }[];
+    status: 'OK' |'ZERO_RESULTS';
+};
 
-console.log(_.shuffle([1,2,3]));
+function searchAddressHandler(event: Event) {
+    event.preventDefault();
 
-console.log(GLOBAL);
-const products = [
-    {title: 'A Carpet', price: 29.99},
-    {title: 'A Book', price: 19.99}
-];
+    const enteredAddress = addressInput.value;
 
-const newProd = new Product('', -5.99);
-validate(newProd).then(errors => {
-    if (errors.length > 0) {
-        console.log('Errors');
-        console.log(errors);
-    } else {
-        console.log(newProd.getInformation());
-    }
-});
+    // send to Googles API
+    axios.get<GoogleGeoResponse>(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(enteredAddress)},+Mountain+View,+CA&key=${API_KEY}`
+    )
+    .then( response => {
+        if (response.data.status !== 'OK') {
+            throw new Error("Could not fetch location");
+        }
+        const coordinates = response.data.results[0].geometry.location;
+        const map = new google.maps.Map(document.getElementById("map")!, {
+            center: coordinates,
+            zoom: 16
+        });
 
+        new google.maps.Marker({ position: coordinates, map: map });
+    })
+        .catch(err => {
+            alert(err.message);
+            console.log(err);
+        });
+}
 
-// const loadedProducts = products.map(prod => {
-//     return new Product(prod.title, prod.price);
-// })
-
-const loadedProducts = plainToInstance(Product, products);
-
-loadedProducts.forEach(prod => {
-    console.log(prod.getInformation());
-});
+form.addEventListener('submit', searchAddressHandler)

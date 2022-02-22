@@ -106,5 +106,5 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "before", "projectToDoList"]
+  "exclude": ["node_modules", "before", "projectToDoList", "modules"]
 }
